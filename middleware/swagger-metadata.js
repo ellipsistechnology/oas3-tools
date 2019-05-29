@@ -179,7 +179,31 @@ var processOperationParameters = function (swaggerMetadata, pathKeys, pathMatch,
 
     return fields;
   }, []);
-  
+
+  // Body for openapi 3.0 is not a parameter but is in requestBody:
+  if(version.match(/^3\./) && swaggerMetadata.operation.requestBody) {
+
+    var contentType = req.headers['content-type'];
+    if(!contentType)
+      return next();
+
+    var content = swaggerMetadata.operation.requestBody.content[contentType];
+    if(!content)
+      return next();
+
+    var paramType = mHelpers.getParameterType(content.schema);
+    var parsableBody = mHelpers.isModelType(spec, paramType) || ['array', 'object'].indexOf(paramType) > -1;
+    var parser;
+    if (parsableBody) {
+      parser = bodyParser;
+    } else {
+      parser = textBodyParser;
+    }
+    if (parsers.indexOf(parser) === -1) {
+      parsers.push(parser);
+    }
+  }
+
   var contentType = req.headers['content-type'];
   if (multiPartFields.length) {
     // If there are files, use multer#fields
