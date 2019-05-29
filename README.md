@@ -1,1 +1,1 @@
-This is a forked project from https://github.com/apigee-127/swagger-tools with an attemp to add Open API 3 support. :)
+This is a forked project from https://github.com/bug-hunters/oas3-tools which is forked from https://github.com/apigee-127/swagger-tools for the purpose of fixing issues with request body parsing for openapi 3.0.
