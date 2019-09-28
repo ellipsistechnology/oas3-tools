@@ -186,6 +186,7 @@ var processOperationParameters = function (swaggerMetadata, pathKeys, pathMatch,
     var contentType = req.headers['content-type'];
     if(!contentType)
       return next();
+    contentType = contentType.split(';')[0]
 
     var content = swaggerMetadata.operation.requestBody.content[contentType];
     if(!content)
