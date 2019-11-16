@@ -36,7 +36,8 @@ var pathToRegexp = require('path-to-regexp');
 
 // Upstream middlewares
 var bodyParserOptions = {
-  extended: false
+  limit: '50mb',
+  extended: true
 };
 var multerOptions = {
   storage: multer.memoryStorage()
@@ -44,8 +45,12 @@ var multerOptions = {
 var textBodyParserOptions = {
   type: '*/*'
 };
+var jsonParserOptions = {
+  limit: '50mb', 
+  extended: true
+}
 
-var jsonBodyParser = bp.json();
+var jsonBodyParser = bp.json(jsonParserOptions);
 var parseQueryString = mHelpers.parseQueryString;
 var queryParser = function (req, res, next) {
   if (_.isUndefined(req.query)) {
